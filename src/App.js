@@ -30,9 +30,6 @@ class App {
         if (this.currentView) {
             this.currentView.destroy();
         }
-        console.log('App - render')
-        console.log('location.pathname: ', location.pathname)
-        console.log('location: ', location)
         const View = this.routes.find(route => route.path === location.pathname).view;
         this.currentView = new View(this.appState);
         this.currentView.render();
