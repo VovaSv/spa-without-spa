@@ -1,6 +1,12 @@
 import { DivComponent } from "../div-component";
 import './header.css';
 
+const navigateEvent = new CustomEvent("navigate", {
+    detail: {
+      name: "dog",
+    },
+  });
+
 export class Header extends DivComponent {
     constructor(appState) {
         super();
@@ -18,8 +24,8 @@ export class Header extends DivComponent {
                 <img src="/static/search.svg" alt="Book searching">
                     Book searching
             </a>
-            <a class="menu__item" href="#">
-                <img src="/static/favorites.svg" alt="Book searching">
+            <a id="favorites-link" class="menu__item" href="#favorites">
+                <img id="" src="/static/favorites.svg" alt="favorites">
                     Favorites
                     <div class="menu__counter">
                         ${this.appState.favorites.length}
@@ -27,6 +33,37 @@ export class Header extends DivComponent {
             </a>
         </div>
         `);
+
+        setTimeout(() => {
+            //Wrapped with setTimeout as looks like after we add element to DOM and emidiatly
+            // trying access it via document so this approach not working emidiatly
+            //so wrapped with setTimeout
+            document.getElementById("favorites-link").addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Catched Event');
+                const navigationEvent = new CustomEvent("navigate", {
+                    detail: {
+                      path: "favorites",
+                    },
+                  });
+                window.dispatchEvent(navigationEvent);  
+    
+            })
+
+        }, 0);
+/*
+        this.el.querySelector("#favorites-link").addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Catched Event');
+            const navigationEvent = new CustomEvent("navigate", {
+                detail: {
+                  path: "favorites",
+                },
+              });
+            window.dispatchEvent(navigationEvent);  
+
+        })
+        */
         return this.el;
     }
 }
